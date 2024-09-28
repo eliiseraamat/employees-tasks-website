@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Task</title>
+</head>
+<body id="task-form-page">
+
+<table border="0" width="100%">
+    <tr>
+        <td></td>
+        <td width="700px">
+            <table border="0" width="100%">
+                <tr>
+                    <td>
+                        <table>
+                            <tr>
+                                <td><a href="index.php" id="dashboard-link">Dashboard</a> | <a href="employees.php" id ="employee-list-link">Employees</a> | <a href="" id="employee-form-link">Add Employee</a> | <a href="tasks.php" id="task-list-link">Tasks</a> | <a href="" id="task-form-link">Add Task</a></td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <form method="post" action="form-task.php">
+                        <table border="0" width="100%">
+                            <tr>
+                                <th align="center" colspan="2">Add Task</th>
+                            </tr>
+                            <tr>
+                                <td align="right">Description:</td>
+                                <td><input name="description" type="text"></td>
+                            </tr>
+                            <tr>
+                                <td align="right">Estimate:</td>
+                                <td><input type="radio" name="estimate" value="1">1<input type="radio" name="estimate" value="2">2<input type="radio" name="estimate" value="3">3<input type="radio" name="estimate" value="4">4<input type="radio" name="estimate" value="5">5</td>
+                            </tr>
+                            <tr>
+                                <td align="center" colspan="2"><button name="submitButton" type="submit" value="b2">Save</button></td>
+                            </tr>
+                        </table>
+                        </form>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center"><br><hr>icd0007 Sample Application</td>
+                </tr>
+            </table>
+        </td>
+        <td></td>
+    </tr>
+</table>
+
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+</head>
+<body id="dashboard-page">
+
+<table border="0" width="100%">
+    <tr>
+        <td></td>
+        <td width="700px">
+            <table border="0" width="100%">
+                <tr>
+                    <td>
+                        <table>
+                            <tr>
+                                <td><a href="" id="dashboard-link">Dashboard</a> | <a href="employees.php" id ="employee-list-link">Employees</a> | <a href="form-employee.html" id="employee-form-link">Add Employee</a> | <a href="tasks.php" id="task-list-link">Tasks</a> | <a href="form-task.html" id="task-form-link">Add Task</a></td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <table border="0" width="100%">
+                            <tr>
+                                <td>
+                                    <table border="1" width="250px">
+                                        <tr>
+                                            <th align="left">Employees</th>
+                                        </tr>
+                                        <tr>
+                                            <td>Daisy Smith <br> Manager</td>
+                                        </tr>
+                                    </table>
+                                </td>
+                                <td>
+                                    <table border="1" width="450px">
+                                        <tr>
+                                            <th align="left">Tasks</th>
+                                        </tr>
+                                        <tr>
+                                            <td>Prevent clearing CSS added to node after ... <br> <input type="checkbox" value="yes"><input type="checkbox" value="yes"><input type="checkbox" value="yes"><input type="checkbox" value="yes"><input type="checkbox" value="yes"> Pending</td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center"><br><hr>icd0007 Sample Application</td>
+                </tr>
+            </table>
+        </td>
+        <td></td>
+    </tr>
+</table>
+
+</body>
+</html>
