@@ -7,11 +7,11 @@ $cmd = $_POST['cmd'] ?? '';
 $number = $_POST['number'] ?? '';
 
 if ($cmd === 'insert') {
-    $display .= $number;
+    $display .= ' ' . $number;
 } else if ($cmd === 'plus') {
-    $display .= '+';
+    $display .= ' ' . '+';
 } else if ($cmd === 'minus') {
-    $display .= '-';
+    $display .= ' ' . '-';
 } else if ($cmd === 'evaluate') {
     $display = evaluate($display);
 }
