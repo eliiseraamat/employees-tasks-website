@@ -3,59 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <title>Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body id="dashboard-page">
 
-<table border="0" width="100%">
-    <tr>
-        <td></td>
-        <td width="700px">
-            <table border="0" width="100%">
-                <tr>
-                    <td>
-                        <table>
-                            <tr>
-                                <td><a href="" id="dashboard-link">Dashboard</a> | <a href="employees.php" id ="employee-list-link">Employees</a> | <a href="form-employee.html" id="employee-form-link">Add Employee</a> | <a href="tasks.php" id="task-list-link">Tasks</a> | <a href="form-task.html" id="task-form-link">Add Task</a></td>
-                            </tr>
-                        </table>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <table border="0" width="100%">
-                            <tr>
-                                <td>
-                                    <table border="1" width="250px">
-                                        <tr>
-                                            <th align="left">Employees</th>
-                                        </tr>
-                                        <tr>
-                                            <td>Daisy Smith <br> Manager</td>
-                                        </tr>
-                                    </table>
-                                </td>
-                                <td>
-                                    <table border="1" width="450px">
-                                        <tr>
-                                            <th align="left">Tasks</th>
-                                        </tr>
-                                        <tr>
-                                            <td>Prevent clearing CSS added to node after ... <br> <input type="checkbox" value="yes"><input type="checkbox" value="yes"><input type="checkbox" value="yes"><input type="checkbox" value="yes"><input type="checkbox" value="yes"> Pending</td>
-                                        </tr>
-                                    </table>
-                                </td>
-                            </tr>
-                        </table>
-                    </td>
-                </tr>
-                <tr>
-                    <td align="center"><br><hr>icd0007 Sample Application</td>
-                </tr>
-            </table>
-        </td>
-        <td></td>
-    </tr>
-</table>
+<div id="base">
+
+<nav>
+    <a href="" id="dashboard-link">Dashboard </a> |
+    <a href="employees.php" id ="employee-list-link">Employees </a> |
+    <a href="form-employee.php" id="employee-form-link">Add Employee </a> |
+    <a href="tasks.php" id="task-list-link">Tasks </a> |
+    <a href="form-task.php" id="task-form-link">Add Task </a>
+</nav>
+
+<main>
+    <div id="dashboard">
+        <div class="dash-column">
+            <div class="dash-header">Employees</div>
+            <div class="dash-content">
+                <div class="dash-item">Daisy Smith <br> Manager</div>
+                <div class="dash-item">Josh Smith <br> Manager</div>
+            </div>
+        </div>
+
+        <div class="dash-column">
+            <div class="dash-header">Tasks</div>
+            <div class="dash-content">
+                <div class="dash-item">Prevent clearing CSS added to node after ... <br> <input type="checkbox" value="yes"><input type="checkbox" value="yes"><input type="checkbox" value="yes"><input type="checkbox" value="yes"><input type="checkbox" value="yes"> Pending</div>
+            </div>
+        </div>
+    </div>
+
+</main>
+
+<footer>
+    icd0007 Sample Application
+</footer>
+
+</div>
 
 </body>
 </html>

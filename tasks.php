@@ -3,53 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <title>Tasks</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body id="task-list-page">
 
-<table border="0" width="100%">
-    <tr>
-        <td></td>
-        <td width="700px">
-            <table border="0" width="100%">
-                <tr>
-                    <td>
-                        <table>
-                            <tr>
-                                <td><a href="index.php" id="dashboard-link">Dashboard</a> | <a href="employees.php" id ="employee-list-link">Employees</a> | <a href="form-employee.html" id="employee-form-link">Add Employee</a> | <a href="" id="task-list-link">Tasks</a> | <a href="form-task.html" id="task-form-link">Add Task</a></td>
-                            </tr>
-                        </table>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <table border="1" width="100%">
-                            <tr>
-                                <th align="left" colspan="2">Tasks</th>
-                            </tr>
-                            <?php
-                            include "tasks-functions.php";
-                            $tasks = getTasks();
-                            foreach ($tasks as $task): ?>
-                                <tr>
-                                    <td><?=$task[0]?> <br>
-                                        <?php for ($i = 1; $i <= 5; $i++) {
-                                            $checked = ($i <= $task[1]) ? "checked" : "";
-                                            echo '<input type="radio" ' . $checked . '>';;
-                                        } ?>
-                                    </td>
-                                </tr>
-                            <?php endforeach;?>
-                        </table>
-                    </td>
-                </tr>
-                <tr>
-                    <td align="center"><br><hr>icd0007 Sample Application</td>
-                </tr>
-            </table>
-        </td>
-        <td></td>
-    </tr>
-</table>
+<div id="base">
+
+<nav>
+    <a href="index.php" id="dashboard-link">Dashboard </a> |
+    <a href="employees.php" id ="employee-list-link">Employees </a> |
+    <a href="form-employee.php" id="employee-form-link">Add Employee </a> |
+    <a href="" id="task-list-link">Tasks </a> |
+    <a href="form-task.php" id="task-form-link">Add Task </a>
+</nav>
+
+<main>
+
+    <?php if (!empty($message)): ?>
+        <div id="message-block"><?= $message ?></div>
+    <?php endif; ?>
+
+    <div class="dash-column">
+        <div class="dash-header">Tasks</div>
+        <div class="dash-content">
+            <?php
+            require_once "tasks-functions.php";
+            $tasks = getTasks();
+            foreach ($tasks as $task): ?>
+                <div class="dash-item">
+                    <span data-task-id="<?= $task[0]?>"><?=$task[1]?></span>
+                    <span class="link"><a id="task-edit-link-<?= $task[0]?>" href="form-task.php?id=<?= $task[0]?>">Edit</a> <br></span>
+                        <?php for ($i = 1; $i <= 5; $i++): ?>
+                            <?php $checked = ($i <= $task[2]) ? "checked" : "";?>
+                    <input type="radio" value ="<?= $i?>" <?php if(!empty($checked)): ?> checked="checked" <?php endif;?>>
+                         <?php endfor; ?>
+                </div>
+            <?php endforeach;?>
+        </div>
+    </div>
+</main>
+
+<footer>
+    icd0007 Sample Application
+</footer>
+
+</div>
 
 </body>
 </html>

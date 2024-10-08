@@ -3,48 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <title>Employees</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body id="employee-list-page">
 
-<table border="0" width="100%">
-    <tr>
-        <td></td>
-        <td width="700px">
-            <table border="0" width="100%">
-                <tr>
-                    <td>
-                        <table>
-                            <tr>
-                                <td><a href="index.php" id="dashboard-link">Dashboard</a> | <a href="" id ="employee-list-link">Employees</a> | <a href="form-employee.html" id="employee-form-link">Add Employee</a> | <a href="tasks.php" id="task-list-link">Tasks</a> | <a href="form-task.html" id="task-form-link">Add Task</a></td>
-                            </tr>
-                        </table>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <table border="1" width="100%">
-                            <tr>
-                                <th align="left" colspan="2">Employees</th>
-                            </tr>
-                            <?php
-                            include "employees-functions.php";
-                            $employees = getEmployees();
-                            foreach ($employees as $employee): ?>
-                            <tr>
-                                <td><?=$employee?></td>
-                            </tr>
-                            <?php endforeach;?>
-                        </table>
-                    </td>
-                </tr>
-                <tr>
-                    <td align="center"><br><hr>icd0007 Sample Application</td>
-                </tr>
-            </table>
-        </td>
-        <td></td>
-    </tr>
-</table>
+<div id="base">
+
+<nav>
+    <a href="index.php" id="dashboard-link">Dashboard </a> |
+    <a href="" id ="employee-list-link">Employees </a> |
+    <a href="form-employee.php" id="employee-form-link">Add Employee </a> |
+    <a href="tasks.php" id="task-list-link">Tasks </a> |
+    <a href="form-task.php" id="task-form-link">Add Task </a>
+</nav>
+
+<main>
+
+    <?php if (!empty($message)): ?>
+        <div id="message-block"><?= $message ?></div>
+    <?php endif; ?>
+
+    <div class="dash-column">
+        <div class="dash-header">Employees</div>
+        <div class="dash-content">
+            <?php
+            require_once "employees-functions.php";
+            $employees = getEmployees();
+            foreach ($employees as $employee): ?>
+                <div class="dash-item">
+                    <?php if (!$employee[2]) {$picture = "img/profile.png";} else {$picture = $employee[2];}?>
+                    <img src="<?=$picture?>" data-employee-id="<?=$employee[0]?>" alt="profile picture" />
+                    <span data-employee-id="<?= $employee[0]?>"><?=$employee[1]?></span>
+                    <span class="link"><a id="employee-edit-link-<?= $employee[0]?>" href="form-employee.php?id=<?= $employee[0]?>">Edit</a></span>
+                </div>
+            <?php endforeach;?>
+        </div>
+    </div>
+</main>
+
+<footer>
+    icd0007 Sample Application
+</footer>
+
+</div>
 
 </body>
 </html>
