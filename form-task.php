@@ -3,11 +3,15 @@
 require_once "tasks-functions.php";
 
 $id = $_GET["id"] ?? null;
+$employeeID = null;
+$isCompleted = null;
 
 if ($id != null) {
     $data = getTask($id);
-    $description = $data[0] ?? null;
-    $estimate = $data[1] ?? null;
+    $description = $data->description ?? null;
+    $estimate = $data->estimate ?? null;
+    $employeeID = $data->employee_id ?? null;
+    $isCompleted = $data->isCompleted?? null;
     if ($description == null || $estimate == null) {
         $message = "Employee not found";
     }
@@ -61,6 +65,21 @@ if ($id != null) {
                     </label>
                     <?php endfor; ?>
                 </div>
+                <div class="label-cell">Assigned to:</div>
+                <div class="input-cell">
+                    <select id="employee" name="employeeId">
+                        <option value=""></option>
+                        <?php require_once "employees-functions.php";
+                        $employees = getEmployees();
+                        foreach ($employees as $employee): ?>
+                        <option <?php if ($employeeID == $employee->id) {print "selected";}?> value="<?=$employee->id?>"><?=$employee->firstName?> <?=$employee->lastName?></option>
+                        <?php endforeach;?>
+                    </select>
+                </div>
+                <?php if($id): ?>
+                <div class="label-cell"><label for="isCompleted">Completed:</label></div>
+                <div class="input-cell"><input id="isCompleted" type="checkbox" <?php if ($isCompleted) {print "checked";}?> name="isCompleted" /></div>
+                <?php endif; ?>
                 <div class="label-cell"></div>
                 <div class="input-cell"> <br> <button name="submitButton" type="submit" value="1">Save</button></div>
                 <?php if ($id): ?>

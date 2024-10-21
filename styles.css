@@ -5,6 +5,7 @@
 body {
     margin: 0 auto;
     max-width: 40rem;
+    background-color: #F5F5F5;
 }
 
 #base {
@@ -28,10 +29,20 @@ nav > a {
     grid-row-gap: .8rem;
 }
 
+#dashboard .dash-content:first-child {
+    width: 14rem;
+}
+
+#dashboard .dash-content:last-child {
+    flex-grow: 1;
+    min-width: 15rem;
+}
+
 .dash-header {
     padding: .4rem;
     border-bottom: 1px solid black;
     margin-bottom: 1rem;
+    background-color: #B0C4DE;
 }
 
 .dash-column {
@@ -43,7 +54,7 @@ nav > a {
     padding: .4rem;
 }
 
-.dash-item {
+.dash-item, .task {
     padding: 0.4rem 0.4rem 1rem 0.4rem;
     border: 1px solid black;
     border-radius: .2rem;
@@ -119,4 +130,58 @@ input[type='text'], textarea, select {
     float: left;
     margin-right: 0.4rem;
     border-radius: .2rem;
+}
+
+.dash-item .count {
+    float: right;
+}
+
+.task .status {
+    float: right;
+    border-radius: .2rem;
+    padding: .1rem .2rem;
+}
+
+.task .open {
+    background-color: #87CEEB;
+}
+
+.task .closed {
+    background-color: #98FB98;
+}
+
+.task .pending {
+    background-color: #FA8072;
+}
+
+.task .dots {
+    font-size: 0;
+}
+
+.task .dots div {
+    border: 1px solid black;
+    border-radius: .15rem;
+    width: .8rem;
+    height: .8rem;
+    display: inline-block;
+    margin-right: .2rem;
+}
+
+.task .dots div.filled {
+    background-color: cornflowerblue;
+}
+
+.task .title > div {
+    max-width: 90%;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+#dashboard .task .title > div {
+    max-width: 20rem;
+}
+
+.task .link > a {
+    float: right;
 }

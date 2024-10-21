@@ -1,65 +1,78 @@
 <?php
 
-const DATA_FILE = "employees.txt";
+require_once "ex6/connection.php";
+require_once "Employee.php";
 
 function saveEmployee(string $firstName, string $lastName, string $picture) : void {
-    $id = getNewId();
-    $line = $id . ";" . urlencode($firstName) . ";" . urlencode($lastName) . ";" . urlencode($picture) . PHP_EOL;
-    file_put_contents(DATA_FILE, $line, FILE_APPEND);
-}
-
-function getNewId(): string {
-    $id = file_get_contents("next-employee-id.txt");
-    file_put_contents("next-employee-id.txt", intval($id) + 1);
-    return $id;
+    $conn = getConnection();
+    $stmt = $conn->prepare("INSERT INTO employee (first_name, last_name, picture) VALUES (:firstName, :lastName, :picture)");
+    $stmt->bindValue(':firstName', $firstName);
+    $stmt->bindValue(':lastName', $lastName);
+    $stmt->bindValue(':picture', $picture);
+    $stmt->execute();
 }
 
 function getEmployees() : array {
+    $conn = getConnection();
+    $stmt = $conn->prepare('SELECT id, first_name, last_name, picture FROM employee ORDER BY id');
+    $stmt->execute();
     $employees = [];
-    $lines = file(DATA_FILE);
-    foreach ($lines as $line) {
-        [$id, $firstName, $lastName, $picture] = explode(";", trim($line));
-        $employees[] = [$id, urldecode($firstName) . " " . urldecode($lastName), urldecode($picture)];
+    foreach ($stmt as $row) {
+        $id = $row['id'];
+        $firstName = $row['first_name'];
+        $lastName = $row['last_name'];
+        $picture = $row['picture'];
+        $newEmployee = new Employee($id, $firstName, $lastName, $picture);
+        $employees[] = $newEmployee;
     }
     return $employees;
 }
 
-function getEmployee(string $employeeID) : array {
-    $employees = getEmployees();
-    foreach ($employees as $line) {
-        [$id, $name, $picture] = [$line[0], $line[1], $line[2]];
-        if ($id === $employeeID) {
-            [$firstName, $lastName] = explode(" ", $name);
-            return [$firstName, $lastName, $picture];
-        }
+function getEmployee(string $employeeID) : Employee {
+    $conn = getConnection();
+    $stmt = $conn->prepare('SELECT first_name, last_name, picture FROM employee where id = (:employeeID)');
+    $stmt->bindValue(':employeeID', intval($employeeID));
+    $stmt->execute();
+    foreach ($stmt as $row) {
+        $firstName = $row["first_name"];
+        $lastName = $row["last_name"];
+        $picture = $row["picture"];
+        return new Employee($employeeID, $firstName, $lastName, $picture);
     }
-    return [];
+    return new Employee((int)null, null, null, null);
 }
 
 function deleteEmployee(string $employeeID) : void {
-    $employees = getEmployees();
-    $lines = [];
-    foreach ($employees as $employee) {
-        [$id, $name, $picture] = [$employee[0], $employee[1], $employee[2]];
-        if ($id !== $employeeID) {
-            [$firstName, $lastName] = explode(" ", $name);
-            $lines[] = $id . ";" . urlencode($firstName) . ";" . urlencode($lastName) . ";" . urlencode($picture) . PHP_EOL;
-        }
-    }
-    file_put_contents(DATA_FILE, implode("", $lines));
+    $conn = getConnection();
+    $stmt = $conn->prepare('DELETE from employee where id = (:employeeID)');
+    $stmt->bindValue(':employeeID', intval($employeeID));
+    $stmt->execute();
 }
 
 function updateEmployee(string $employeeID, string $newFirstName, string $newLastName, string $newPicture) : void {
-    $employees = getEmployees();
-    $lines = [];
-    foreach ($employees as $employee) {
-        [$id, $name, $picture] = [$employee[0], $employee[1], $employee[2]];
-        if ($id !== $employeeID) {
-            [$firstName, $lastName] = explode(" ", $name);
-            $lines[] = $id . ";" . urlencode($firstName) . ";" . urlencode($lastName) . ";" . urlencode($picture) . PHP_EOL;
-        } else {
-            $lines[] = $id . ";" . urlencode($newFirstName) . ";" . urlencode($newLastName) . ";" . urlencode($newPicture) . PHP_EOL;
-    }
-    file_put_contents(DATA_FILE, implode("", $lines));
-    }
+    $conn = getConnection();
+    $stmt = $conn->prepare('UPDATE employee set first_name = (:firstName), last_name = (:lastName), picture = (:picture) where id = (:employeeID)');
+    $stmt->bindValue(':employeeID', intval($employeeID));
+    $stmt->bindValue(':firstName', $newFirstName);
+    $stmt->bindValue(':lastName', $newLastName);
+    $stmt->bindValue(':picture', $newPicture);
+    $stmt->execute();
 }
+
+function getEmployeeTasks() : array {
+    $conn = getConnection();
+    $stmt = $conn->prepare('SELECT e.id, t.description from employee e left join task t on e.id = t.employee_id');
+    $stmt->execute();
+    $dict = [];
+    foreach ($stmt as $row) {
+        if (isset($dict[$row["id"]]) && $row["description"] !== null) {
+            $dict[$row["id"]] += 1;
+        } else if (!isset($dict[$row["id"]]) && $row["description"] !== null) {
+            $dict[$row["id"]] = 1;
+        } else {
+            $dict[$row["id"]] = 0;
+        }
+    }
+    return $dict;
+}
+

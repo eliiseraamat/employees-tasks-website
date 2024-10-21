@@ -30,14 +30,16 @@
             require_once "tasks-functions.php";
             $tasks = getTasks();
             foreach ($tasks as $task): ?>
-                <div class="dash-item">
-                    <span data-task-id="<?= $task[0]?>"><?=$task[1]?></span>
-                    <span class="link"><a id="task-edit-link-<?= $task[0]?>" href="form-task.php?id=<?= $task[0]?>">Edit</a> <br></span>
+                <div class="task">
+                    <span class="link"><a id="task-edit-link-<?= $task->id?>" href="form-task.php?id=<?= $task->id?>">Edit</a></span>
+                    <div class="title"><div data-task-id="<?= $task->id?>"><?=$task->description?></div></div><br>
+                    <div id="task-state-<?=$task->id?>" class="status <?=strtolower($task->status)?>"><?=$task->status?></div>
+                    <div class="dots">
                         <?php for ($i = 1; $i <= 5; $i++): ?>
-                            <?php $checked = ($i <= $task[2]) ? "checked" : "";?>
-                    <input type="radio" value ="<?= $i?>" <?php if(!empty($checked)): ?> checked="checked" <?php endif;?>>
+                            <div <?php if($i <= $task->estimate):?> class="filled" <?php endif;?>> </div>
                          <?php endfor; ?>
-                </div>
+                    </div>
+        </div>
             <?php endforeach;?>
         </div>
     </div>

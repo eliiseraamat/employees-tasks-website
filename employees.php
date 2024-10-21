@@ -31,10 +31,10 @@
             $employees = getEmployees();
             foreach ($employees as $employee): ?>
                 <div class="dash-item">
-                    <?php if (!$employee[2]) {$picture = "img/profile.png";} else {$picture = $employee[2];}?>
-                    <img src="<?=$picture?>" data-employee-id="<?=$employee[0]?>" alt="profile picture" />
-                    <span data-employee-id="<?= $employee[0]?>"><?=$employee[1]?></span>
-                    <span class="link"><a id="employee-edit-link-<?= $employee[0]?>" href="form-employee.php?id=<?= $employee[0]?>">Edit</a></span>
+                    <?php if (!$employee->picture) {$picture = "img/profile.png";} else {$picture = $employee->picture;}?>
+                    <img src="<?=$picture?>" data-employee-id="<?=$employee->id?>" alt="profile picture">
+                    <span data-employee-id="<?= $employee->id?>"><?=$employee->firstName?> <?=$employee->lastName?></span>
+                    <span class="link"><a id="employee-edit-link-<?= $employee->id?>" href="form-employee.php?id=<?= $employee->id?>">Edit</a></span>
                 </div>
             <?php endforeach;?>
         </div>

@@ -6,9 +6,9 @@ $id = $_GET["id"] ?? null;
 
 if ($id != null) {
     $data = getEmployee($id);
-    $firstName = $data[0] ?? null;
-    $lastName = $data[1] ?? null;
-    $picture = $data[2] ?? null;
+    $firstName = $data->firstName ?? null;
+    $lastName = $data->lastName ?? null;
+    $picture = $data->picture ?? null;
     if ($firstName == null || $lastName == null) {
         $message = "Employee not found";
     }

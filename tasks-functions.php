@@ -1,62 +1,83 @@
 <?php
 
-const DATA_FILE = 'tasks.txt';
+require_once "ex6/connection.php";
+require_once "Task.php";
 
-function saveTask(string $description, string $estimate) : void {
-    $id = getNewId();
-    $line = $id . ";" . urlencode($description) . ";" . urlencode($estimate) . PHP_EOL;
-    file_put_contents(DATA_FILE, $line, FILE_APPEND);
-}
-
-function getNewId(): string {
-    $id = file_get_contents("next-task-id.txt");
-    file_put_contents("next-task-id.txt", intval($id) + 1);
-    return $id;
+function saveTask(string $description, string $estimate, string $employee_id) : int {
+    $conn = getConnection();
+    $stmt = $conn->prepare("INSERT INTO task (description, estimate, employee_id, is_completed, status) VALUES (:description, :estimate, :employeeID, :isCompleted, :status)");
+    $stmt->bindValue(':description', $description);
+    $stmt->bindValue(':estimate', $estimate);
+    $stmt->bindValue(':employeeID', $employee_id);
+    $stmt->bindValue(':isCompleted', 0);
+    if ($employee_id < 0) {
+        $stmt->bindValue(':status', "Open");
+    } else {
+        $stmt->bindValue(':status', "Pending");
+    }
+    $stmt->execute();
+    return $conn->lastInsertId();
 }
 
 function getTasks() : array {
+    $conn = getConnection();
+    $stmt = $conn->prepare('SELECT id, description, estimate, employee_id, is_completed, status FROM task ORDER BY id');
+    $stmt->execute();
     $tasks = [];
-    $lines = file(DATA_FILE);
-    foreach ($lines as $line) {
-        [$id, $description, $estimate] = explode(';', trim($line));
-        $tasks[] = [$id, urldecode($description), urldecode($estimate)];
+    foreach ($stmt as $row) {
+        $id = $row['id'];
+        $description = $row['description'];
+        $estimate = $row['estimate'];
+        $employeeID = $row["employee_id"];
+        $isCompleted = $row["is_completed"];
+        $status = $row["status"];
+        $newTask = new Task($id, $description, $estimate, $employeeID, $isCompleted, $status);
+        $tasks[] = $newTask;
     }
     return $tasks;
 }
 
-function getTask(string $taskID) : array {
-    $tasks = getTasks();
-    foreach ($tasks as $line) {
-        [$id, $description, $estimate] = [$line[0], $line[1], $line[2]];
-        if ($id == $taskID) {
-            return [$description, $estimate];
-        }
+function getTask(string $taskID) : Task {
+    $conn = getConnection();
+    $stmt = $conn->prepare('SELECT description, estimate, employee_id, is_completed, status FROM task where id = (:taskID)');
+    $stmt->bindValue(':taskID', intval($taskID));
+    $stmt->execute();
+    foreach ($stmt as $row) {
+        $description = $row["description"];
+        $estimate = $row["estimate"];
+        $employeeID = $row["employee_id"];
+        $isCompleted = $row["is_completed"];
+        $status = $row["status"];
+        return new Task($taskID, $description, $estimate, $employeeID, $isCompleted, $status);
     }
-    return [];
+    return new Task((int)null, null, null, null, null, null);
 }
 
 function deleteTask(string $taskID) : void {
-    $tasks = getTasks();
-    $lines = [];
-    foreach ($tasks as $task) {
-        [$id, $description, $estimate] = [$task[0], $task[1], $task[2]];
-        if ($id !== $taskID) {
-            $lines[] = $id . ";" . urlencode($description) . ";" . urlencode($estimate) . PHP_EOL;
-        }
-    }
-    file_put_contents(DATA_FILE, implode("", $lines));
+    $conn = getConnection();
+    $stmt = $conn->prepare('DELETE from task where id = (:taskID)');
+    $stmt->bindValue(':taskID', intval($taskID));
+    $stmt->execute();
 }
 
-function updateTask(string $taskID, string $newDescription, string $newEstimate) : void {
-    $tasks = gettasks();
-    $lines = [];
-    foreach ($tasks as $task) {
-        [$id, $description, $estimate] = [$task[0], $task[1], $task[2]];
-        if ($id !== $taskID) {
-            $lines[] = $id . ";" . urlencode($description) . ";" . urlencode($estimate) . PHP_EOL;
-        } else {
-            $lines[] = $id . ";" . urlencode($newDescription) . ";" . urlencode($newEstimate) . PHP_EOL;
-        }
-        file_put_contents(DATA_FILE, implode("", $lines));
+function updateTask(string $taskID, string $newDescription, string $newEstimate, string $employeeID, bool $isCompleted) : void {
+    $conn = getConnection();
+    $stmt = $conn->prepare('UPDATE task set description = (:description), estimate = (:estimate), employee_id = (:employeeID), is_completed = (:isCompleted), status = (:status) where id = (:taskID)');
+    $stmt->bindValue(':taskID', intval($taskID));
+    $stmt->bindValue(':description', $newDescription);
+    $stmt->bindValue(':estimate', $newEstimate);
+    $stmt->bindValue(':employeeID', $employeeID);
+    if ($isCompleted) {
+        $stmt->bindValue(':isCompleted', 1);
+    } else {
+        $stmt->bindValue(':isCompleted', 0);
     }
+    if ($employeeID < 0 && !$isCompleted) {
+        $stmt->bindValue(':status', "Open");
+    } else if ($employeeID > 0 && !$isCompleted) {
+        $stmt->bindValue(':status', "Pending");
+    } else {
+        $stmt->bindValue(':status', "Closed");
+    }
+    $stmt->execute();
 }
