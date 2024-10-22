@@ -1,3 +1,8 @@
+<?php
+$message = $_GET["message"] ?? "";
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,7 +25,7 @@
 <main>
 
     <?php if (!empty($message)): ?>
-        <div id="message-block"><?= $message ?></div>
+        <div id="message-block"><?= urldecode($message)?></div>
     <?php endif; ?>
 
     <div class="dash-column">

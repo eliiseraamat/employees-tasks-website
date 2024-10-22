@@ -48,9 +48,9 @@ if ($id != null) {
             <form id="input-form" method="post" action="save-employee.php" enctype="multipart/form-data">
                 <input type="hidden" value=<?=$id?> name="id">
                 <div class="label-cell"><label for="fn">First name:</label></div>
-                <div class="input-cell"><input name="firstName" id="fn" type="text"<?php if (!empty($firstName)): ?> value="<?=$firstName?>"<?php endif; ?>></div>
+                <div class="input-cell"><input name="firstName" id="fn" type="text"<?php if (!empty($firstName)): ?> value="<?=htmlspecialchars($firstName)?>"<?php endif; ?>></div>
                 <div class="label-cell"><label for="ln">Last name:</label></div>
-                <div class="input-cell"><input name="lastName" id="ln" type="text"<?php if (!empty($lastName)): ?> value="<?=$lastName?>"<?php endif; ?>></div>
+                <div class="input-cell"><input name="lastName" id="ln" type="text"<?php if (!empty($lastName)): ?> value="<?=htmlspecialchars($lastName)?>"<?php endif; ?>></div>
                 <div class="label-cell"><label for="picture">Picture:</label></div>
                 <div class="input-cell"><input id="picture" name="picture" type="file" /></div>
                 <div class="label-cell"></div>

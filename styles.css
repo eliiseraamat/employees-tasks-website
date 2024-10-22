@@ -168,7 +168,7 @@ input[type='text'], textarea, select {
 }
 
 .task .dots div.filled {
-    background-color: cornflowerblue;
+    background-color: #B0C4DE;
 }
 
 .task .title > div {

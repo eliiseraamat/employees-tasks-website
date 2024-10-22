@@ -12,7 +12,7 @@ if ($id != null) {
     $estimate = $data->estimate ?? null;
     $employeeID = $data->employee_id ?? null;
     $isCompleted = $data->isCompleted?? null;
-    if ($description == null || $estimate == null) {
+    if ($description === null || $estimate === null) {
         $message = "Employee not found";
     }
 }
@@ -41,7 +41,7 @@ if ($id != null) {
 <main>
 
     <?php if (!empty($message)): ?>
-        <div id="error-block"><?= $message ?></div>
+        <div id="error-block"><?= urldecode($message) ?></div>
     <?php endif; ?>
 
     <div class="dash-column">

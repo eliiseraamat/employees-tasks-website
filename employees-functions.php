@@ -6,9 +6,9 @@ require_once "Employee.php";
 function saveEmployee(string $firstName, string $lastName, string $picture) : void {
     $conn = getConnection();
     $stmt = $conn->prepare("INSERT INTO employee (first_name, last_name, picture) VALUES (:firstName, :lastName, :picture)");
-    $stmt->bindValue(':firstName', $firstName);
-    $stmt->bindValue(':lastName', $lastName);
-    $stmt->bindValue(':picture', $picture);
+    $stmt->bindValue(':firstName', urlencode($firstName));
+    $stmt->bindValue(':lastName', urlencode($lastName));
+    $stmt->bindValue(':picture', urlencode($picture));
     $stmt->execute();
 }
 
@@ -19,9 +19,9 @@ function getEmployees() : array {
     $employees = [];
     foreach ($stmt as $row) {
         $id = $row['id'];
-        $firstName = $row['first_name'];
-        $lastName = $row['last_name'];
-        $picture = $row['picture'];
+        $firstName = urldecode($row['first_name']);
+        $lastName = urldecode($row['last_name']);
+        $picture = urldecode($row['picture']);
         $newEmployee = new Employee($id, $firstName, $lastName, $picture);
         $employees[] = $newEmployee;
     }
@@ -34,9 +34,9 @@ function getEmployee(string $employeeID) : Employee {
     $stmt->bindValue(':employeeID', intval($employeeID));
     $stmt->execute();
     foreach ($stmt as $row) {
-        $firstName = $row["first_name"];
-        $lastName = $row["last_name"];
-        $picture = $row["picture"];
+        $firstName = urldecode($row["first_name"]);
+        $lastName = urldecode($row["last_name"]);
+        $picture = urldecode($row["picture"]);
         return new Employee($employeeID, $firstName, $lastName, $picture);
     }
     return new Employee((int)null, null, null, null);
@@ -53,9 +53,9 @@ function updateEmployee(string $employeeID, string $newFirstName, string $newLas
     $conn = getConnection();
     $stmt = $conn->prepare('UPDATE employee set first_name = (:firstName), last_name = (:lastName), picture = (:picture) where id = (:employeeID)');
     $stmt->bindValue(':employeeID', intval($employeeID));
-    $stmt->bindValue(':firstName', $newFirstName);
-    $stmt->bindValue(':lastName', $newLastName);
-    $stmt->bindValue(':picture', $newPicture);
+    $stmt->bindValue(':firstName', urlencode($newFirstName));
+    $stmt->bindValue(':lastName', urlencode($newLastName));
+    $stmt->bindValue(':picture', urlencode($newPicture));
     $stmt->execute();
 }
 
