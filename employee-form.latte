@@ -1,0 +1,22 @@
+{if $message}
+    <div n:foreach="$message as $error" id="error-block">{$error}</div>
+{/if}
+
+<div class="dash-column">
+    <div class="dash-header">{$id ? "Edit Employee" : "Add Employee"}</div>
+    <div class="dash-content">
+        <form id="input-form" method="post" action="save-employee.php" enctype="multipart/form-data">
+            <input type="hidden" value={$id} name="id">
+            <div class="label-cell"><label for="fn">First name:</label></div>
+            <div class="input-cell"><input name="firstName" id="fn" type="text" value="{$firstName ?? ''}"></div>
+            <div class="label-cell"><label for="ln">Last name:</label></div>
+            <div class="input-cell"><input name="lastName" id="ln" type="text" value="{$lastName ?? ''}"></div>
+            <div class="label-cell"><label for="picture">Picture:</label></div>
+            <div class="input-cell"><input id="picture" name="picture" type="file" /></div>
+            <div class="label-cell"></div>
+            <div class="input-cell"> <br> <button name="submitButton" type="submit" formaction="?cmd=employee-save">Save</button></div>
+            <div n:if="$id" class="label-cell"></div>
+            <div n:if="$id" class="input-cell"> <br> <button name="deleteButton" type="submit" formaction="?cmd=employee-delete">Delete</button></div>
+        </form>
+    </div>
+</div>

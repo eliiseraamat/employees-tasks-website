@@ -1,0 +1,18 @@
+<div n:if="!empty($message)" id="message-block">{urldecode($message)}</div>
+
+<div class="dash-column">
+    <div class="dash-header">Tasks</div>
+    <div class="dash-content">
+        {var $tasks = $repository->getTasks()}
+        <div class="task" n:foreach="$tasks as $task">
+            <span class="link"><a id="task-edit-link-{$task->id}" href="?cmd=task-edit&id={$task->id}">Edit</a></span>
+            <div class="title"><div data-task-id="{$task->id}">{$task->description}</div></div><br>
+            <div id="task-state-{$task->id}" class="status {strtolower($task->status)}">{$task->status}</div>
+            <div class="dots">
+            {foreach range(1, 5) as $nr}
+                <div n:class="$nr <= $task->estimate ? 'filled': ''"> </div>
+            {/foreach}
+            </div>
+            </div>
+    </div>
+</div>

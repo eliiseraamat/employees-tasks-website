@@ -1,0 +1,31 @@
+<div id="dashboard">
+    <div class="dash-column">
+        <div class="dash-header">Employees</div>
+            <div class="dash-content">
+                {var $employees = $repository->getEmployees()}
+                {var $data = $repository->getEmployeeTasks()}
+                <div class="dash-item" n:foreach="$employees as $employee">
+                    {var $picture = !$employee->picture ? "img/profile.png": $employee->picture}
+                    <img src="{$picture}" data-employee-id="{$employee->id}" alt="profile picture" >
+                    <span data-employee-id="{$employee->id}">{$employee->firstName} {$employee->lastName}</span>
+                    <span id="employee-task-count-{$employee->id}" class="count">{$data[$employee->id]}</span>
+                </div>
+            </div>
+    </div>
+
+    <div class="dash-column">
+        <div class="dash-header">Tasks</div>
+            <div class="dash-content">
+                {var $tasks = $repository->getTasks()}
+                <div class="task" n:foreach="$tasks as $task">
+                    <div class="title"><div data-task-id="{$task->id}">{$task->description}</div></div><br>
+                    <div id="task-state-{$task->id}" class="status {strtolower($task->status)}">{$task->status}</div>
+                    <div class="dots">
+                    {foreach range(1, 5) as $nr}
+                        <div n:class="$nr <= $task->estimate ? 'filled': ''"> </div>
+                    {/foreach}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

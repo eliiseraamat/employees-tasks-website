@@ -1,0 +1,14 @@
+<div n:if="!empty($message)" id="message-block">{urldecode($message)}</div>
+
+<div class="dash-column">
+    <div class="dash-header">Employees</div>
+    <div class="dash-content">
+        {var $employees = $repository->getEmployees()}
+        <div class="dash-item" n:foreach="$employees as $employee">
+            {var $picture = !$employee->picture ? "img/profile.png": $employee->picture}
+            <img src="{$picture}" data-employee-id="{$employee->id}" alt="profile picture">
+            <span data-employee-id="{$employee->id}">{$employee->firstName} {$employee->lastName}</span>
+            <span class="link"><a id="employee-edit-link-{$employee->id}" href="?cmd=employee-edit&id={$employee->id}">Edit</a></span>
+        </div>
+    </div>
+</div>
