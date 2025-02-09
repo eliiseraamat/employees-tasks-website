@@ -1,6 +1,6 @@
 <?php
 
-require 'ex8/vendor/autoload.php';
+require 'vendor/autoload.php';
 require_once 'Repository.php';
 
 $repository = new Repository();
