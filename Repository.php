@@ -1,6 +1,6 @@
 <?php
 
-require_once "ex6/connection.php";
+require_once "connection.php";
 require_once "Task.php";
 require_once "Employee.php";
 class Repository {
